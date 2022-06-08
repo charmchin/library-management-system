@@ -1,0 +1,40 @@
+  #include <stdlib.h>
+  #include <stdio.h>
+  #include <conio.h>
+  #include "math.h"
+  struct Date	/*日期结构*/
+  { 
+     int m_nYear;	/*年*/
+     int m_nMonth;	/*月*/
+     int m_nDay;	/*日*/
+  };
+  struct Reader	/*读者结构*/
+  {
+     char  num[20];	/*借书证号*/
+     struct Date  bro;	/*借出时间*/ 
+     struct Date  back;	/*归还时间*/ 
+  };
+  struct  Book	/*书本结构*/
+  {
+     int  m_iBook_Number;	/*对应书本号*/
+     char m_strTitle[150];	/*书名*/
+     char m_strWroter[150];	/*作者*/
+     int  m_nMoreNum;	/*当前在架册数*/
+     int  m_nTotalHoldNum;	/*馆藏册数*/
+     char m_strComment[300];	/*图书简介*/
+     struct Reader reader[200]; 
+  };
+  struct Info	/*借书信息结构*/
+  {
+     struct Info *m_pParentPoint;	/*前驱结点*/
+     struct Book *m_pBookInfo;	/*对应书本的信息*/
+     struct Info *m_pSun;	/*后继结点*/
+  };
+  struct Book *InputNode();
+  struct Info *Search(struct Info *bth,int x,int *k,int *flag);	/*查找图书*/
+  struct Info *Insert_BookInfo(struct Info *bth);	/*图书上架*/
+  struct Info *Delete_BookInfo(struct Info *bth);	/*图书下架*/
+  void   Output_BookInfo(struct Info *bth);	/*打印输出书本信息*/
+  void   Borrow_TheBook(struct Info *bth);	/*图书出借*/
+  void   TurnBack_TheBook(struct Info *bth);	/*图书归还*/
+  char   Select_Menu();	/*图书馆管理系统主菜单*/ 

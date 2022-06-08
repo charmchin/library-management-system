@@ -1,0 +1,86 @@
+  struct Info *Delete_BookInfo(struct Info *bth)
+  {
+     int flag,j,k,t;
+     int x,y;
+     struct Info  *u=NULL,*s=NULL,*p=NULL,*q=NULL;
+     struct Book  *bookinfo=NULL;
+     struct Info *BookLeftPoint=NULL;	/*前驱结点*/
+     struct Info *BookRightPoint = NULL;	/*后继结点*/
+     system("cls");	/*清屏*/
+     printf("\n\t请输入你想下架的书本号: ");
+     scanf("%d",&x);	/*接受输入*/
+     q=Search(bth,x,&k,&flag);	/*查找指定的书是否存在*/
+     if(flag==0) 
+     {	/*书本不存在是,直接输出消息并返回*/
+        printf("\n\t这本书不存在!\n"); 
+        return(bth);
+     } 
+     else
+     {
+        if(q==NULL)
+        {
+           printf("未知错误");
+           return bth;	/*确保当前工作指针是有效的,防止出现非法操作*/
+        }
+     else
+         {
+            bookinfo=q->m_pBookInfo;
+            printf("\n\t想下架的书本信息: ");   
+            printf("\n\t书名:             %s",bookinfo->m_strTitle);    
+            printf("\n\t作者:            %s",bookinfo->m_strWroter);
+            printf("\n\t当前在架册数:     %d",bookinfo->m_nMoreNum);
+            printf("\n\t馆藏册数:       %d",bookinfo->m_nTotalHoldNum);
+            printf("\n\t本书简介: %s\n",bookinfo->m_strComment);
+            if(q->m_pParentPoint!=NULL && q->m_pSun!=NULL)
+            {
+                 /*夹在链表中间的结点*/
+               BookLeftPoint = q->m_pParentPoint;	/*要删除的结点的前驱指向赋给前驱结点指针变量*/
+               BookRightPoint = q->m_pSun;	/*要删除的结点的后继指向赋给后继结点的指针变量*/
+               BookLeftPoint->m_pSun = BookRightPoint;	/*将后继结点指针指向的地址作为前驱结点中新后继域*/
+               BookRightPoint->m_pParentPoint = BookLeftPoint;	/*将后继结点指向的前驱域设定为要删除的结点的前驱结点*/
+               q->m_pParentPoint = NULL;
+               q->m_pSun = NULL;
+           free(q->m_pBookInfo);	/*先将书本信息结构体的内存释放*/
+           q->m_pBookInfo = NULL;	/*使指针指向安全地址*/
+           free(q);	/*将要删除的借还书信息结构体指针使用的内存空间释放*/
+           q = NULL;	/*要习惯将动态分配的内存在使用后动态释放,并将指针域指向空*/
+           return bth;	/*返回首结点*/
+        }
+        else if(q->m_pParentPoint==NULL)
+        {
+             /*首结点的前驱为空,这里处理首结点删除操作*/
+           if(q->m_pSun==NULL)
+           {	/*前后指针域均为空时,说明只有一个结点,此时只需要将此结点删除*/
+              free(q->m_pBookInfo);
+              q->m_pBookInfo = NULL;
+              free(q);
+              q = NULL;
+              return q;
+           }
+           bth = q->m_pSun;
+           bth->m_pParentPoint = NULL;
+    /*要删除的结点的后继指向赋给后继结点的指针变量*/
+              BookRightPoint = q;
+              BookRightPoint->m_pParentPoint = NULL;	/*将链表中指向首结点的后继指针的前驱指针域置为空,表明是新的首结点*/
+               BookRightPoint->m_pSun = NULL;	/*将链表中指向首结点的后继指针的前驱指针域置为空,表明是新的首结点*/
+               free(BookRightPoint->m_pBookInfo);	/*先将书本信息结构体的内存释放*/
+               BookRightPoint->m_pBookInfo = NULL;	/*使指针指向安全地址*/
+               free(BookRightPoint);	/*将要删除的借还书信息结构体指针使用的内存空间释放*/
+               BookRightPoint = NULL;	/*要习惯将动态分配的内存在使用后动态释放,并将指针域指向空*/
+               return bth;	/*返回首结点*/
+            }
+            else if (q->m_pSun==NULL)
+            {
+                 /*尾结点的后继结点为空,这里处理尾结点的删除操作*/
+               BookLeftPoint = q->m_pParentPoint;	/*将要删除的结点即尾结点的前驱域保存到前驱指针变量中*/
+               BookLeftPoint->m_pSun = NULL;	/*将要删除的结点的前驱结点与链表断开,前驱结点作为新的尾结点*/
+              q->m_pParentPoint = NULL;
+              free(q->m_pBookInfo);	/*先将书本信息结构体的内存释放*/
+              q->m_pBookInfo = NULL;	/*使指针指向安全地址*/
+              free(q);	/*将要删除的借还书信息结构体指针使用的内存空间释放*/
+              q = NULL;	/*要习惯将动态分配的内存在使用后动态释放,并将指针域指向空*/
+              return bth;	/*返回首结点*/
+           }
+        }
+     }
+  }

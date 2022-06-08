@@ -1,0 +1,33 @@
+struct Info *Search(struct Info *bth,int x,int *k,int *flag)
+{
+	struct Info *p=NULL;
+	/*当前工作指针*/
+	p=bth; /*每次查询前,将工作指针指向双向链表头部结点*/
+	*flag=0; /*是否查找到指定书个号的标志,初始化置为0*/
+	while(p)
+	{
+		if(p->m_pBookInfo->m_iBook_Number==x)
+		{
+			/*找到相同的书号,置找到的标志*/
+			*flag = 1;
+			return p;
+		}
+		else
+		{
+			/*未找到相同的书号,置未找到标志*/
+			*flag = 0;
+		}
+		if(p->m_pSun!=NULL)
+		{
+			p = p->m_pSun;
+			/*没到双向链表的尾部时,向后移动当前指针*/
+		}
+		else
+		{
+			break;/*到达链表尾部,跳出循环*/
+		}
+		
+	}
+
+	return bth;
+}

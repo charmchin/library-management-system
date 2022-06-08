@@ -1,0 +1,54 @@
+  char Select_Menu()
+  {	/*主菜单显示函数*/
+     system("cls");
+      printf("/******************************************\\\n");
+      printf("*                                          *\n");
+      printf("*        图  书  馆  管  理  系  统        *\n");
+      printf("*                  主菜单                  *\n");
+      printf("*                                          *\n");
+      printf("*               1. 图书上架                *\n");
+      printf("*               2. 图书下架                *\n");
+      printf("*               3. 查找图书                *\n");
+      printf("*               4. 图书出借                *\n");
+      printf("*               5. 图书归还                *\n");
+      printf("*               6. 退出系统                *\n"); 
+      printf("*                                          *\n");
+      printf("*             请选择菜单项：(1~6)          *\n");
+      printf("\\******************************************/\n");
+     return getch();
+  }
+  void main()
+  {
+     char c,t;
+     int flag,p=1;
+     struct Info *bth=NULL;
+     while(1)
+     {
+        c=Select_Menu(); 
+         printf("您选择了：%c",c);
+        getch();
+        switch(c)  
+        {
+        case '1': 
+           bth=Insert_BookInfo(bth);	/*图书上架*/
+              break;
+        case '2': 
+           bth=Delete_BookInfo(bth);	/*图书下架*/
+              break;
+        case '3': Output_BookInfo(bth);	/*查找图书*/
+              break;
+        case '4': Borrow_TheBook(bth);	/*图书出借*/
+              break;
+        case '5': TurnBack_TheBook(bth);	/*图书归还*/
+              break;
+        case '6':
+        case '0': system("cls");
+              printf("\n\t你想退出系统 ?(y/n)");
+              t=getch();
+              if(t=='y'||t=='Y') exit(0);
+              break;
+        }
+        printf("\n\t按任意键返回主菜单....");
+        getch();
+     }
+  } 

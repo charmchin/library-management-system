@@ -1,0 +1,79 @@
+   struct Book *InputNode()
+   {
+      struct Book *p=NULL;
+      int i;
+      p=(struct Book *)malloc(sizeof(struct Book));	/*分配内存*/
+      system("cls");	/*清屏*/
+      fflush(stdin);	/*清除以前的输入*/
+      printf("\n\t请输入书名: ");   
+      gets(p->m_strTitle);	/*从键盘取得书名*/
+      printf("\n\t请输入作者: ");
+      gets(p->m_strWroter);	/*从键盘取得作者名*/
+      printf("\n\t请输入当前在架册数: ");
+      scanf("%d",&p->m_nMoreNum);	/*从键盘取得当前在架册数*/
+      printf("\n\t请输入馆藏册数: ");
+      scanf("%d",&p->m_nTotalHoldNum);	/*从键盘取得当前馆藏册数*/
+      fflush(stdin);
+      printf("\n\t请输入本书简介: ");	/*从键盘取得本书内容简要介绍*/
+      gets(p->m_strComment);
+      /*以上从输入输出设备取得要求的信息*/
+      for(i=0;i<20;i++)
+         (p->reader[i]).num[0]='\0';	/*初始化书本结构成员的相关读者指针内容为空*/
+      return(p);	/*返回成功插入的一本书信息*/
+   }
+   struct Info *Insert_BookInfo(struct Info *bth)
+   {
+      int flag,j,k,t;
+      int y,x,z;
+      struct Info *p=NULL,*q=NULL,*u=NULL,*s=NULL;
+      struct Book *r=NULL,*l=NULL;
+      system("cls");	/*清屏*/
+      printf("\n\t请输入你想上架的书本号: ");
+      scanf("%d",&x);	/*取书号*/  
+      q=Search(bth,x,&k,&flag);	/*查找上架的书是否已经上架,返回已经找到的书的信息*/
+      if(flag==1)   
+       {	/*查找成功，存在此书*/
+         printf("\n\t当前存在这本书%d本,您想再增加一本<<%s>>书?(y/n)\n",q->m_pBookInfo->m_n TotalHoldNum,q->m_pBookInfo->m_strTitle);
+       z=getch();
+       if(z=='y'||z=='Y') 
+       {	/*确认上架另一本书*/
+          printf("\n\t本馆此书一共有: %d 本",q->m_pBookInfo->m_nTotalHoldNum);
+          printf("\n\t并且有: %d 本在图书馆中内未借出.",q->m_pBookInfo->m_nMoreNum);
+          q->m_pBookInfo->m_nTotalHoldNum++;
+          q->m_pBookInfo->m_nMoreNum++;  
+          printf("\n\t上架后一共有:  %d 本",q->m_pBookInfo->m_nTotalHoldNum);
+          printf("\n\t上架后当前有:  %d 本在图书馆中.",q->m_pBookInfo->m_nMoreNum);
+       }
+       return(bth); 
+     }
+    r=InputNode(bth);	/*成功插入书本信息,指针r存放刚刚插入的书本*/
+    if(bth==NULL) 
+     {
+       /*指针bth为空时，表示当前链表为空，此时需要单独处理，即链表头内存分配*/
+       bth=p=(struct Info *)malloc(sizeof(struct Info));	/*申请内存*/
+       r->m_iBook_Number = x;	/*将书号存入书本信息结构体*/
+       p->m_pParentPoint= NULL;	/*前驱结点置空*/
+       p->m_pSun=NULL;	/*后继结点置空*/
+       p->m_pBookInfo=r;
+       return(p);	/*返回新成功插入的书本结点*/
+     }
+    else
+    {
+       /*说明已经有头指针,则在此开始处理新插入的结构体指针*/
+       p=NULL; 
+       p=bth;
+       while(p->m_pSun!=NULL)
+       {
+          p = p->m_pSun;	/*当后继结点不为空时,表示还未到链表尾部*/
+       }
+       /*当循环结束后,p指向的就是最后一个结点*/
+       q=(struct Info *)malloc(sizeof(struct Info));	/*申请内存*/
+       r->m_iBook_Number = x;	/*将书号存入书本信息结构体*/
+       p->m_pSun = q;	/*双向链表的前驱与后继结点链接*/
+       q->m_pParentPoint= p;	/*前驱结点置为p*/
+       q->m_pSun=NULL;	/*后继结点置空,相当于电线接地*/
+       q->m_pBookInfo=r;	/*指向新插入的书本信息结构体*/
+    }
+    return(bth);  
+ }
+

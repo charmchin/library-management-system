@@ -1,0 +1,48 @@
+  void Borrow_TheBook(struct Info *bth)
+  {
+     struct Info *q=NULL;
+     struct Book *p=NULL;
+     int i,k, x, flag,t;
+     system("cls");	/*清屏*/
+     printf("\n\t请输入你想借的书本号: ");	/*打印消息*/
+     scanf("%d",&x);	/*接受输入*/
+     q=Search(bth,x,&k,&flag); 	/*查找书本*/
+     if(flag==1)  
+     {
+        p=q->m_pBookInfo;
+        printf("\n\t借出这本书 ?(y/n)");
+        printf("\n\t书名:             %s",p->m_strTitle);
+        printf("\n\t作者:            %s",p->m_strWroter);
+        printf("\n\t当前在架册数:     %d",p->m_nMoreNum);
+        printf("\n\t馆藏册数:       %d",p->m_nTotalHoldNum);
+        printf("\n\t本书简介: %s\n",p->m_strComment);
+      t=getch();
+      if(t=='y'||t=='Y')
+      {	/*确认借这本书*/
+         if( (p->m_nMoreNum)==0) printf("\n\t对不起,本书已经全部借出...");
+         else
+         {
+            system("cls");
+            for(i=0;i<20;i++) if( (p->reader[i]).num[0]=='\0') break;
+            printf("\n\t请输入借书证号: ");  
+            scanf("%s",(p->reader[i]).num);
+            printf("\n\t请输入借出的日期: "); 
+            printf("\n\t年:  ");
+            scanf("%d",&((p->reader[i]).bro.m_nYear));
+            printf("\t月: ");
+            scanf("%d",&((p->reader[i]).bro.m_nMonth));
+            printf("\t日:   ");
+            scanf("%d",&((p->reader[i]).bro.m_nDay));
+            printf("\n\t请输入归还日期: ");
+            printf("\n\t年:  ");
+            scanf("%d",&((p->reader[i]).back.m_nYear));
+            printf("\t月: ");
+            scanf("%d",&((p->reader[i]).back.m_nMonth));
+            printf("\t日:   ");
+            scanf("%d",&((p->reader[i]).back.m_nDay));
+            p->m_nMoreNum--;       
+            printf("\n\t成功借到本书.");}
+      }
+   }
+   else printf("\n\t这本书不存在!"); 
+}

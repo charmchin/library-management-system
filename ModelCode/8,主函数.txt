@@ -1,0 +1,36 @@
+void main()
+{
+    system("chcp 65001"); /* cmd chcp 命令切换字符编码为 utf-8 以显示中文 */
+	char c,t;
+	int flag,p=1;
+	struct Info *bth=NULL;
+	while(1)
+	{
+		c=Select_Menu(); 
+	    printf("您选择了：%c",c);
+		getch();
+		switch(c)  
+		{
+		case '1': 
+			bth=Insert_BookInfo(bth);/*图书上架*/
+            break;
+		case '2': 
+			bth=Delete_BookInfo(bth);/*图书下架*/
+            break;
+		case '3': Output_BookInfo(bth);/*查找图书*/
+            break;
+		case '4': Borrow_TheBook(bth);/*图书出借*/
+            break;
+		case '5': TurnBack_TheBook(bth);/*图书归还*/
+            break;
+		case '6':
+		case '0': system("cls");
+            printf("\n\t你想退出系统 ?(y/n)");
+            t=getch();
+            if(t=='y'||t=='Y') exit(0);
+            break;
+		}
+		printf("\n\t按任意键返回主菜单....");
+		getch();
+	}
+} 
